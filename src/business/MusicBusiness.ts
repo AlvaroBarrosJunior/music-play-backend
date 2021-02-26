@@ -1,6 +1,7 @@
 import { IdGenerator } from "./services/IdGenerator";
 import { MusicDatabase } from "../data/MusicDatabase"
 import { MusicInputDTO } from "./entities/Music";
+import { CustomError } from "./error/CustomError";
 
 export class MusicBusiness {
 
@@ -10,6 +11,13 @@ export class MusicBusiness {
   ) { }
 
   async createMusic(music: MusicInputDTO) {
+    if (!music.title) throw new CustomError(422, `Missing title`)
+    if (!music.author) throw new CustomError(422, `Missing author`)
+    if (!music.date) throw new CustomError(422, `Missing date`)
+    if (!music.file) throw new CustomError(422, `Missing file`)
+    if (!music.genre) throw new CustomError(422, `Missing genres`)
+    if (!music.album) throw new CustomError(422, `Missing album`)
+
     const id = this.idGenerator.generate()
 
     await this.musicDatabase.createMusic(
